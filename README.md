@@ -1,3 +1,4 @@
+[![Build Status](https://dev.azure.com/AliaksandrDabratsou/AZ-Learn/_apis/build/status/mslearn-tailspin-spacegame-web?branchName=main)](https://dev.azure.com/AliaksandrDabratsou/AZ-Learn/_build/latest?definitionId=10&branchName=main)
 
 # Contributing
 
