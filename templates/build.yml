@@ -1,5 +1,6 @@
 parameters:
   buildConfiguration: 'Release'
+  calculateCoverage: true
 
 steps:
 - task: DotNetCoreCLI@2
@@ -10,12 +11,37 @@ steps:
     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Run unit tests - ${{ parameters.buildConfiguration }}'
+  displayName: 'Run unit tests - ${{ parameters.buildConfiguration }}'  
+  condition: eq(${{ parameters.calculateCoverage }}, false)
   inputs:
     command: 'test'
     arguments: '--no-build --configuration ${{ parameters.buildConfiguration }}'
     publishTestResults: true
     projects: '**/*.Tests.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run unit tests - ${{ parameters.buildConfiguration }} with coverage'  
+  condition: eq(${{ parameters.calculateCoverage }}, true)
+  inputs:
+    command: 'test'
+    arguments: '--no-build --configuration ${{ parameters.buildConfiguration }} /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
+    publishTestResults: true
+    projects: '**/*.Tests.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Create code coverage report'
+  condition: eq(${{ parameters.calculateCoverage }}, true)
+  inputs:
+    command: custom
+    custom: tool
+    arguments: 'run reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines'
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage report'
+  condition: eq(${{ parameters.calculateCoverage }}, true)
+  inputs:
+    codeCoverageTool: 'cobertura'
+    summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish the project - ${{ parameters.buildConfiguration }}'
