@@ -18,6 +18,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+
+    <ItemGroup>
+    <PackageReference Include="Tailspin.SpaceGame.Web.Models" Version="1.0.0-CI-20211024-143225" />
+  </ItemGroup>
   </ItemGroup>
 
   <ItemGroup>
