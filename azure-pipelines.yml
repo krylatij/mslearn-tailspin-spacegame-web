@@ -1,8 +1,6 @@
 trigger:
 - '*'
 
-pool:
-  vmImage: 'ubuntu-20.04'
 #pool:
 #  name: 'MyAgentPool'
 #  demands:
@@ -13,56 +11,66 @@ variables:
   wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
   dotnetSdkVersion: '5.x'
 
-steps:
-- task: UseDotNet@2
-  displayName: 'Use .NET SDK $(dotnetSdkVersion)'
-  inputs:
-    version: '$(dotnetSdkVersion)'
+stages:
+- stage: 'Build'
+  displayName: 'Build the web application'
+  pool:
+    vmImage: 'ubuntu-20.04'
+    demands:
+      - npm
 
-- task: NuGetToolInstaller@0
-  inputs:
-    versionSpec: '5.9.1'
+  jobs: 
+  - job: 'Build'
+      steps:
+      - task: UseDotNet@2
+        displayName: 'Use .NET SDK $(dotnetSdkVersion)'
+        inputs:
+          version: '$(dotnetSdkVersion)'
 
-- task: Npm@1
-  displayName: 'Run npm install'
-  inputs:
-    verbose: false
+      - task: NuGetToolInstaller@0
+        inputs:
+          versionSpec: '5.9.1'
 
-- script: './node_modules/.bin/node-sass $(wwwrootDir) --output $(wwwrootDir)'
-  displayName: 'Compile Sass assets'
+      - task: Npm@1
+        displayName: 'Run npm install'
+        inputs:
+          verbose: false
 
-- task: gulp@1
-  displayName: 'Run gulp tasks'
+      - script: './node_modules/.bin/node-sass $(wwwrootDir) --output $(wwwrootDir)'
+        displayName: 'Compile Sass assets'
 
-- script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
-  displayName: 'Write build info'
-  workingDirectory: $(wwwrootDir)
+      - task: gulp@1
+        displayName: 'Run gulp tasks'
 
-- task: NuGetCommand@2
-  displayName: 'Restore project dependencies'
-  inputs:
-    command: 'restore'
-    restoreSolution: '**/*.sln'
-    feedsToUse: 'select'
-    vstsFeed: '$(System.TeamProject)/Tailspin.SpaceGame.Web.Models'
+      - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
+        displayName: 'Write build info'
+        workingDirectory: $(wwwrootDir)
 
-- task: DotNetCoreCLI@2
-  displayName: 'Install .NET tools from local manifest'
-  inputs:
-    command: custom
-    custom: tool
-    arguments: 'restore'
+      - task: NuGetCommand@2
+        displayName: 'Restore project dependencies'
+        inputs:
+          command: 'restore'
+          restoreSolution: '**/*.sln'
+          feedsToUse: 'select'
+          vstsFeed: '$(System.TeamProject)/Tailspin.SpaceGame.Web.Models'
 
-- template: templates/build.yml
-  parameters:
-    buildConfiguration: 'Debug'
-    calculateCoverage: false
+      - task: DotNetCoreCLI@2
+        displayName: 'Install .NET tools from local manifest'
+        inputs:
+          command: custom
+          custom: tool
+          arguments: 'restore'
 
-- template: templates/build.yml
-  parameters:
-    buildConfiguration: 'Release'
-    calculateCoverage: true
+      - template: templates/build.yml
+        parameters:
+          buildConfiguration: 'Debug'
+          calculateCoverage: false
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
-  condition: succeeded()
+      - template: templates/build.yml
+        parameters:
+          buildConfiguration: 'Release'
+          calculateCoverage: true
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact: drop'
+        condition: succeeded()
