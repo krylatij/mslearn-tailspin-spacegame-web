@@ -16,12 +16,12 @@ parameters:
 
 jobs:
 - deployment: 'Deploy'
-  displayName: 'Deploy'
+  displayName: 'Deploy on ${{ parameters.env }}'
   pool:
     vmImage: 'ubuntu-20.04'
   variables:
-  - group: ${{ env }}
-  environment: ${{ env }}
+  - group: ${{ parameters.env }}
+  environment: ${{ parameters.env }}
   strategy:
     runOnce:
       deploy:
@@ -31,6 +31,6 @@ jobs:
         - task: AzureWebApp@1
           displayName: 'Azure App Service Deploy: website'
           inputs:
-            azureSubscription: 'service-conn-tailspin-${{ env }}'
+            azureSubscription: 'service-conn-tailspin-${{ parameters.env }}'
             appName: '$(WebAppName)'
-            package: '$(Pipeline.Workspace)/drop/${{ buildConfiguration }}/Tailspin.SpaceGame.Web.zip'
+            package: '$(Pipeline.Workspace)/drop/${{ parameters.buildConfiguration }}/Tailspin.SpaceGame.Web.zip'
