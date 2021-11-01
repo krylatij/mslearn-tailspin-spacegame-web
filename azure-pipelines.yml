@@ -79,7 +79,7 @@ stages:
   displayName: 'Deploy the web application'
   dependsOn: Build
   jobs:  
-    - template: template/deploy.yml
+    - template: templates/deploy.yml
       parameters:
         buildConfiguration: 'Release'
         env: 'dev'
