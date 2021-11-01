@@ -80,7 +80,7 @@ stages:
   dependsOn: Build
   jobs:  
     - template: template/deploy.yml
-    - parameters:
+      parameters:
         buildConfiguration: 'Release'
         env: 'dev'
       
