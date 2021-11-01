@@ -1,21 +1,21 @@
 parameters:
-  - name: buildConfiguration
-    type: string
-    default: false
-    values:
-    - 'Release'
-    - 'Debug'
-
-  - name: env
-    type: string
-    default: false
-    values:
-    - 'dev'
-    - 'testing'
-    - 'stage'
+- name: buildConfiguration
+  type: string
+  default: false
+  values:
+  - 'Release'
+  - 'Debug'
+  
+- name: env
+  type: string
+  default: false
+  values:
+  - 'dev'
+  - 'testing'
+  - 'stage'
 
 jobs:
-- deployment: Deploy
+- deployment: 'Deploy'
   displayName: 'Deploy ${{ env }}'
   pool:
     vmImage: 'ubuntu-20.04'
