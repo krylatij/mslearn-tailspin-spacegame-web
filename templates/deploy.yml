@@ -2,21 +2,20 @@ parameters:
   buildConfiguration: 'Release'
   env: dev
 
-
-- deployment: Deploy
-    pool:
-      vmImage: 'ubuntu-20.04'
-    variables:
-      - group: $(env)
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-            - download: current
-              artifact: drop
-            - task: AzureWebApp@1
-              displayName: 'Azure App Service Deploy: website'
-              inputs:
-                azureSubscription: 'service-conn-tailspin-$(env)'
-                appName: '$(WebAppName)'
-                package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/Tailspin.SpaceGame.Web.zip'
+deployment: Deploy
+  pool:
+    vmImage: 'ubuntu-20.04'
+  variables:
+    - group: $(env)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureWebApp@1
+            displayName: 'Azure App Service Deploy: website'
+            inputs:
+              azureSubscription: 'service-conn-tailspin-$(env)'
+              appName: '$(WebAppName)'
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/Tailspin.SpaceGame.Web.zip'
