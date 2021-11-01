@@ -78,12 +78,9 @@ stages:
 - stage: 'Deploy'
   displayName: 'Deploy the web application'
   dependsOn: Build
-  jobs:
-  - deployment: Deploy
-    pool:
-      vmImage: 'ubuntu-20.04'
-    template: template/deploy.yml
-    parameters:
-      buildConfiguration: 'Release'
-      env: 'dev'
+  jobs:  
+    - template: template/deploy.yml
+    - parameters:
+        buildConfiguration: 'Release'
+        env: 'dev'
       
