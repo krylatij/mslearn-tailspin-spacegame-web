@@ -76,7 +76,7 @@ stages:
       condition: succeeded()
 
 - stage: 'Deploy_DEV'
-  displayName: 'Deploy the web application'
+  displayName: 'Deploy the web application on DEV'
   dependsOn: Build
   condition: succeeded()
   jobs: 
@@ -84,4 +84,14 @@ stages:
       parameters:
         buildConfiguration: 'Release'
         env: 'dev'
+
+- stage: 'Deploy_Staging'
+  displayName: 'Deploy the web application on Stagin'
+  dependsOn: Deploy_DEV
+  condition: succeeded()
+  jobs: 
+    - template: templates/deploy.yml
+      parameters:
+        buildConfiguration: 'Release'
+        env: 'staging'
       
