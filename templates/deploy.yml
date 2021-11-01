@@ -12,7 +12,7 @@ parameters:
   values:
   - 'dev'
   - 'testing'
-  - 'stage'
+  - 'staging'
 
 jobs:
 - deployment: 'Deploy'
