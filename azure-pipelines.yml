@@ -75,14 +75,10 @@ stages:
       displayName: 'Publish Artifact: drop'
       condition: succeeded()
 
-- stage: 'Deploy'
+- stage: 'Deploy DEV'
   displayName: 'Deploy the web application'
   dependsOn: Build
-  condition: |
-    and
-    (
-      succeeded()
-    )
+  condition: succeeded()
   jobs: 
     - template: templates/deploy.yml
       parameters:
