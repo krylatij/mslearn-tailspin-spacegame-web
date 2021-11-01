@@ -5,7 +5,7 @@ parameters:
   values:
   - 'Release'
   - 'Debug'
-  
+
 - name: env
   type: string
   default: false
@@ -16,7 +16,7 @@ parameters:
 
 jobs:
 - deployment: 'Deploy'
-  displayName: 'Deploy ${{ env }}'
+  displayName: 'Deploy'
   pool:
     vmImage: 'ubuntu-20.04'
   variables:
