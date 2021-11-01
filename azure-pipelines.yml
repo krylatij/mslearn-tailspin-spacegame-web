@@ -78,7 +78,12 @@ stages:
 - stage: 'Deploy'
   displayName: 'Deploy the web application'
   dependsOn: Build
-  jobs:  
+  condition: |
+    and
+    (
+      succeeded()
+    )
+  jobs: 
     - template: templates/deploy.yml
       parameters:
         buildConfiguration: 'Release'

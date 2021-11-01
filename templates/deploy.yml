@@ -2,11 +2,13 @@ parameters:
   buildConfiguration: 'Release'
   env: dev
 
-deployment: Deploy
-  pool:
-    vmImage: 'ubuntu-20.04'
-  variables:
-    - group: $(env)
+
+jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'ubuntu-20.04'
+    variables:
+      - group: $(env)
     strategy:
       runOnce:
         deploy:
