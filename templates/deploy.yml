@@ -14,8 +14,9 @@ parameters:
   - 'testing'
   - 'staging'
 
-variables:
-  dotnetSdkVersion: '5.x'
+- name: dotnetSdkVersion
+  type: string
+  default: false
 
 jobs:
 - deployment: 'Deploy'

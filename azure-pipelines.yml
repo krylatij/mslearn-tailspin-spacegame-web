@@ -94,4 +94,5 @@ stages:
       parameters:
         buildConfiguration: 'Release'
         env: 'staging'
+        dotnetSdkVersion: $(dotnetSdkVersion)
       
