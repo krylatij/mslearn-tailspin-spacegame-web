@@ -14,6 +14,9 @@ parameters:
   - 'testing'
   - 'staging'
 
+variables:
+  dotnetSdkVersion: '5.x'
+
 jobs:
 - deployment: 'Deploy'
   displayName: 'Deploy on ${{ parameters.env }}'
@@ -41,7 +44,7 @@ jobs:
   pool:
     vmImage: 'windows-2019'
   variables:
-  - group: 'Release'
+  - group: ${{ parameters.env }}
   steps: 
   - task: UseDotNet@2
     displayName: 'Use .NET SDK $(dotnetSdkVersion)'
