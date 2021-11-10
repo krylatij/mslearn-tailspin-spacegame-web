@@ -86,7 +86,7 @@ stages:
         env: 'dev'
 
 - stage: 'Deploy_Staging'
-  displayName: 'Deploy the web application on Stagin'
+  displayName: 'Deploy the web application on Staging'
   dependsOn: Deploy_DEV
   condition: succeeded()
   jobs: 
@@ -100,7 +100,7 @@ stages:
   displayName: 'Run load tests on Staging'
   jobs:
     - job: RunLoadTests
-      dependsOn: Deploy
+      environment: staging     
       displayName: 'Run load tests'
       pool:
         vmImage: 'ubuntu-20.04'
