@@ -99,8 +99,7 @@ stages:
 - stage: 'LoadTests_Staging'
   displayName: 'Run load tests on Staging'
   jobs:
-    - job: RunLoadTests
-      environment: staging     
+    - job: RunLoadTests         
       displayName: 'Run load tests'
       pool:
         vmImage: 'ubuntu-20.04'
