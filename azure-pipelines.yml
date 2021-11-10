@@ -96,6 +96,9 @@ stages:
         env: 'staging'
         dotnetSdkVersion: $(dotnetSdkVersion)
 
+- stage: 'LoadTests_Staging'
+  displayName: 'Run load tests on Staging'
+  jobs:
     - job: RunLoadTests
       dependsOn: Deploy
       displayName: 'Run load tests'
