@@ -18,6 +18,10 @@ parameters:
   type: string
   default: false
 
+- name: useSlot
+  type: boolean
+  default: false
+
 jobs:
 - deployment: 'Deploy'
   displayName: 'Deploy on ${{ parameters.env }}'
@@ -32,12 +36,29 @@ jobs:
         steps:
         - download: current
           artifact: drop
+
         - task: AzureWebApp@1
           displayName: 'Azure App Service Deploy: website'
           inputs:
             azureSubscription: 'service-conn-tailspin-${{ parameters.env }}'
+            deployToSlotOrASE: useSlot
+            resourceGroupName: 'rg-tailspin-${{ parameters.env }}'
+            slotName: 'tailspin${{ parameters.env }}-slot-b'
             appName: '$(WebAppName)'
             package: '$(Pipeline.Workspace)/drop/${{ parameters.buildConfiguration }}/Tailspin.SpaceGame.Web.zip'
+
+        - task: AzureAppServiceManage@0
+          displayName: 'Swap deployment slots'
+          condition: eq(parameters.useSlot, true)
+          inputs:
+            azureSubscription: 'service-conn-tailspin-${{ parameters.env }}'
+            resourceGroupName: 'rg-tailspin-${{ parameters.env }}'
+            webAppName: '$(WebAppName)'
+            sourceSlot: 'tailspin${{ parameters.env }}-slot-b'
+            targetSlot: 'tailspin${{ parameters.env }}'
+            action: 'Swap Slots'
+
+
 
 - job: RunUITests
   dependsOn: Deploy

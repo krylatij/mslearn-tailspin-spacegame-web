@@ -95,6 +95,7 @@ stages:
         buildConfiguration: 'Release'
         env: 'staging'
         dotnetSdkVersion: $(dotnetSdkVersion)
+        useSlot: true
 
 - stage: 'LoadTests_Staging'
   displayName: 'Run load tests on Staging'

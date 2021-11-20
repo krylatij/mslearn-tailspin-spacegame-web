@@ -22,9 +22,9 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">10</stringProp>
+          <stringProp name="LoopController.loops">2</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">10</stringProp>
+        <stringProp name="ThreadGroup.num_threads">2</stringProp>
         <stringProp name="ThreadGroup.ramp_time">10</stringProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration"></stringProp>
@@ -36,15 +36,22 @@
           <stringProp name="cacheKey">true</stringProp>
           <stringProp name="filename"></stringProp>
           <stringProp name="parameters"></stringProp>
-          <stringProp name="script">vars.put(&quot;unique_UUID&quot;,UUID.randomUUID().toString());</stringProp>
+          <stringProp name="script">
+var correlationId = &quot;perf-etbears-&quot; + UUID.randomUUID().toString();
+log.info(correlationId)
+vars.put(&quot;correlationId&quot;, correlationId);</stringProp>
           <stringProp name="scriptLanguage">groovy</stringProp>
         </JSR223PreProcessor>
         <hashTree/>
         <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">correlation-id</stringProp>
-              <stringProp name="Header.value">${unique_UUID}</stringProp>
+              <stringProp name="Header.name">x-correlation-id</stringProp>
+              <stringProp name="Header.value">${correlationId}</stringProp>
+            </elementProp>
+            <elementProp name="" elementType="Header">
+              <stringProp name="Header.name">appKey</stringProp>
+              <stringProp name="Header.value">HlDOTPiRY68z3A0PQu5tCSgh3pfsj4v0</stringProp>
             </elementProp>
           </collectionProp>
         </HeaderManager>
@@ -53,11 +60,11 @@
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
-          <stringProp name="HTTPSampler.domain">${__P(hostname, tailspinstaging.azurewebsites.net)}</stringProp>
+          <stringProp name="HTTPSampler.domain">qa-us.api.platts.com</stringProp>
           <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.protocol"></stringProp>
+          <stringProp name="HTTPSampler.protocol">https</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-          <stringProp name="HTTPSampler.path"></stringProp>
+          <stringProp name="HTTPSampler.path">/platts-platform/menu-svc/health</stringProp>
           <stringProp name="HTTPSampler.concurrentPool">6</stringProp>
           <stringProp name="HTTPSampler.connect_timeout"></stringProp>
           <stringProp name="HTTPSampler.response_timeout"></stringProp>
