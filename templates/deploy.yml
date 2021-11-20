@@ -54,8 +54,8 @@ jobs:
             azureSubscription: 'service-conn-tailspin-${{ parameters.env }}'
             resourceGroupName: 'rg-tailspin-${{ parameters.env }}'
             webAppName: '$(WebAppName)'
-            sourceSlot: 'tailspin${{ parameters.env }}-slot-b'
-            targetSlot: 'tailspin${{ parameters.env }}'
+            sourceSlot: 'slot-b'
+            targetSlot: 'production'
             action: 'Swap Slots'
 
 
