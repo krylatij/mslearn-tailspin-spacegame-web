@@ -43,7 +43,7 @@ jobs:
             azureSubscription: 'service-conn-tailspin-${{ parameters.env }}'
             deployToSlotOrASE: useSlot
             resourceGroupName: 'rg-tailspin-${{ parameters.env }}'
-            slotName: 'tailspin${{ parameters.env }}-slot-b'
+            slotName: 'slot-b'
             appName: '$(WebAppName)'
             package: '$(Pipeline.Workspace)/drop/${{ parameters.buildConfiguration }}/Tailspin.SpaceGame.Web.zip'
 
