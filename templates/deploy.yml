@@ -49,7 +49,7 @@ jobs:
 
         - task: AzureAppServiceManage@0
           displayName: 'Swap deployment slots'
-          condition: eq(parameters.useSlot, true)
+          condition: eq(${{ parameters.useSlot }}, true)
           inputs:
             azureSubscription: 'service-conn-tailspin-${{ parameters.env }}'
             resourceGroupName: 'rg-tailspin-${{ parameters.env }}'
